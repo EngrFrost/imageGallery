@@ -5,6 +5,7 @@ import GalleryPage from "../pages/GalleryPage";
 import App from "../App";
 import ProtectedRoute from "./ProtectedRoute";
 import AppLayout from "../components/common/layout/AppLayout";
+import { AuthProvider } from "../providers/AuthProvider";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,11 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/",
-            element: <AppLayout />,
+            element: (
+              <AuthProvider>
+                <AppLayout />
+              </AuthProvider>
+            ),
             children: [
               {
                 index: true,

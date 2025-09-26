@@ -41,7 +41,7 @@ const GalleryPage: React.FC = () => {
 
   const { data, isLoading, refetch } = useGetImagesQuery({
     page,
-    limit: 3,
+    limit: 4,
     color: filters.color ?? "",
   });
 
