@@ -2,6 +2,7 @@ import { App } from "antd";
 import { ImageUpload, ImageDetailModal } from "../components/common";
 import { GalleryFilters, GalleryList } from "../components/gallery";
 import { useGalleryState } from "../hooks/useGalleryState";
+import { PAGE_LIMIT } from "../utils/constants";
 
 export interface Image {
   id: string;
@@ -38,7 +39,7 @@ const GalleryPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 mt-20">
+    <>
       {/* Gallery Filters */}
       <GalleryFilters
         searchQuery={galleryState.searchQuery}
@@ -76,7 +77,7 @@ const GalleryPage = () => {
           images={galleryState.images}
           totalImages={galleryState.totalImages}
           currentPage={galleryState.page}
-          pageSize={8}
+          pageSize={PAGE_LIMIT}
           isLoading={galleryState.isLoading}
           isFetching={galleryState.isFetching}
           hasActiveFilters={galleryState.hasActiveFilters}
@@ -89,7 +90,7 @@ const GalleryPage = () => {
           onUploadClick={() => galleryState.setIsUploadModalOpen(true)}
         />
       </main>
-    </div>
+    </>
   );
 };
 

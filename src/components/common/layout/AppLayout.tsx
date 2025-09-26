@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import { Drawer } from "../Drawer";
+import { Layout } from "./";
 import Sidebar from "./Sidebar";
 import { cn } from "../../../utils/helpers";
-import { Drawer } from "../Drawer";
-import { Layout } from ".";
+import AppHeader from "./AppHeader";
 
 const { Content } = Layout;
 
@@ -13,7 +14,11 @@ const AppLayout: React.FC = () => {
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (!mobile) {
+        setMobileMenuOpen(false);
+      }
     };
 
     checkMobile();
@@ -22,16 +27,9 @@ const AppLayout: React.FC = () => {
   }, []);
 
   return (
-    <Layout className="bg-gray-50 min-h-screen">
-      {/* Desktop Sidebar */}
-      {!isMobile && (
-        <div className="fixed left-0 top-0 h-full w-64 bg-gray-900 z-20 shadow-xl">
-          <Sidebar />
-        </div>
-      )}
-
-      {/* Mobile Sidebar Drawer */}
-      {isMobile && (
+    <Layout className="min-h-screen bg-gray-50">
+      {/* Mobile Sidebar */}
+      {isMobile ? (
         <Drawer
           title={null}
           placement="left"
@@ -43,15 +41,20 @@ const AppLayout: React.FC = () => {
         >
           <Sidebar />
         </Drawer>
+      ) : (
+        <div className="fixed left-0 top-0 h-full w-64 bg-gray-900 z-20 shadow-xl">
+          <Sidebar />
+        </div>
       )}
 
-      {/* Main Layout */}
       <Layout
-        className={cn(
-          "bg-transparent min-h-screen",
-          isMobile ? "ml-0" : "ml-64"
-        )}
+        className={cn("bg-transparent", {
+          "ml-0": isMobile,
+          "ml-64": !isMobile,
+        })}
       >
+        {isMobile && <AppHeader onMenuClick={() => setMobileMenuOpen(true)} />}
+
         <Content className="p-4 md:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto">
             <Outlet />
