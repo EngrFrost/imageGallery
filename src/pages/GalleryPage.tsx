@@ -39,7 +39,7 @@ const GalleryPage = () => {
   };
 
   return (
-    <>
+    <div className="min-h-[calc(100vh-64px)]">
       {/* Gallery Filters */}
       <GalleryFilters
         searchQuery={galleryState.searchQuery}
@@ -90,7 +90,7 @@ const GalleryPage = () => {
           onUploadClick={() => galleryState.setIsUploadModalOpen(true)}
         />
       </main>
-    </>
+    </div>
   );
 };
 
