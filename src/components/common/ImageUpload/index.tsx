@@ -78,13 +78,11 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           <p style={{ fontSize: "16px", color: "#555" }}>
             Click or drag files to this area to upload
           </p>
-          <p style={{ color: "#999" }}>
-            Support for a single or bulk upload.
-          </p>
+          <p style={{ color: "#999" }}>Support for a single or bulk upload.</p>
         </div>
       </Spin>
     </Modal>
   );
 };
 
-export default ImageUpload;
+export { ImageUpload };

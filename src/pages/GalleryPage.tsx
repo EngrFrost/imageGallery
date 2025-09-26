@@ -1,21 +1,16 @@
 import React, { useState } from "react";
+import { SearchOutlined, CloudUploadOutlined } from "@ant-design/icons";
+import { useGetImagesQuery } from "../api/services/images";
 import {
-  Input,
-  Button,
   Row,
   Col,
-  Typography,
-  Space,
-  Spin,
-  Empty,
+  Input,
   Pagination,
-} from "antd";
-import { SearchOutlined, CloudUploadOutlined } from "@ant-design/icons";
-import ImageCard from "../components/common/ImageCard/ImageCard";
-import ImageUpload from "../components/common/ImageUpload/ImageUpload";
-import { useGetImagesQuery } from "../api/services/images";
-
-const { Title } = Typography;
+  Spin,
+  Button,
+  ImageUpload,
+  ImageCard,
+} from "../components/common";
 
 export interface Image {
   id: string;
@@ -74,10 +69,10 @@ const GalleryPage: React.FC = () => {
     <div>
       <Row justify="space-between" align="middle" style={{ marginBottom: 24 }}>
         <Col>
-          <Title level={2}>Gallery</Title>
+          <h1>Gallery</h1>
         </Col>
         <Col>
-          <Space>
+          <div className="flex items-center gap-2">
             <Input
               placeholder="Search by tag..."
               value={searchQuery}
@@ -86,13 +81,12 @@ const GalleryPage: React.FC = () => {
               prefix={<SearchOutlined />}
             />
             <Button
-              icon={<CloudUploadOutlined />}
-              type="primary"
+              startIcon={<CloudUploadOutlined />}
               onClick={() => setIsUploadModalOpen(true)}
             >
               Upload Image
             </Button>
-          </Space>
+          </div>
         </Col>
       </Row>
       <ImageUpload
@@ -109,15 +103,13 @@ const GalleryPage: React.FC = () => {
       />
       <Row style={{ marginBottom: 24 }}>
         <Col>
-          <Space>
+          <div className="flex items-center gap-2">
             <span>Filter by color:</span>
             <Button onClick={() => handleColorFilter("blue")}>Blue</Button>
             <Button onClick={() => handleColorFilter("red")}>Red</Button>
             <Button onClick={() => handleColorFilter("green")}>Green</Button>
-            <Button onClick={clearFilters} type="dashed">
-              Clear Filters
-            </Button>
-          </Space>
+            <Button onClick={clearFilters}>Clear Filters</Button>
+          </div>
         </Col>
       </Row>
       <main>
@@ -126,7 +118,9 @@ const GalleryPage: React.FC = () => {
             <Spin size="large" />
           </div>
         ) : filteredImages.length === 0 ? (
-          <Empty description="No images found. Try a different filter or upload something new!" />
+          <div className="text-center text-gray-500">
+            No images found. Try a different filter or upload something new!
+          </div>
         ) : (
           <>
             <Row gutter={[16, 16]}>

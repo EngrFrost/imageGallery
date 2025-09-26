@@ -50,4 +50,4 @@ const ImageCard: React.FC<ImageCardProps> = ({ image, onFindSimilar }) => {
   );
 };
 
-export default ImageCard;
+export { ImageCard };
