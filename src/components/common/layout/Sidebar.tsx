@@ -67,7 +67,12 @@ const Sidebar: React.FC = () => {
           danger
           icon={<LogoutOutlined />}
           onClick={logout}
-          style={{ width: "100%", color: "#a9a9a9" }}
+          className="w-full !text-[#a9a9a9] hover:!text-[#888888] hover:!bg-transparent hover:!border-none hover:!border-0 hover:!shadow-none focus:!border-none focus:!shadow-none focus:!outline-none"
+          style={{
+            border: 'none',
+            boxShadow: 'none',
+            outline: 'none'
+          }}
         >
           Logout
         </Button>

@@ -7,9 +7,9 @@ import { cn } from "../../../utils/helpers";
 
 import { Input } from "../../common/Input";
 
-import { FormHelpText } from "../FormHelpText";
 import FormItem from "../FormItem";
 import FormLabel from "../FormLabel";
+import FormHelpText from "../FormHelpText";
 
 interface IProps extends AntInputProps {
   inputName: string;

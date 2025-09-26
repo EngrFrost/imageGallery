@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button } from "../../common";
 import { useNavigate } from "react-router-dom";
-import FormInput from "../../formElements/FormInput";
-import Form from "../../formElements/Form";
+import { FormInput, Form, FormSubmit } from "../../formElements";
 import { useSignupMutation } from "../../../api/services/auth";
 import { validationSchema, type SignupCredentials } from "./formhelpers";
 
@@ -30,9 +28,12 @@ const SignupForm: React.FC = () => {
     <Form methods={methods} onSubmit={onSubmit}>
       <FormInput label="Email" inputName="email" />
       <FormInput label="Password" type="password" inputName="password" />
-      <Button isLoading={isLoading} className="w-full !bg-blue-500 !text-white">
+      <FormSubmit
+        isLoading={isLoading}
+        className="w-full !bg-blue-500 !text-white"
+      >
         Sign Up
-      </Button>
+      </FormSubmit>
     </Form>
   );
 };

@@ -8,4 +8,4 @@ const FormHelpText: FC<IProps> = ({ message }) => (
   <div className="mt-1 text-xs text-left text-red-6">{message}</div>
 );
 
-export { FormHelpText };
+export default FormHelpText;
