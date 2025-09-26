@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { message } from "antd";
 import { useGetImagesQuery } from "../api/services/images";
 import type { Image } from "../pages/GalleryPage";
+import { PAGE_LIMIT } from "../utils/constants";
 
 interface UseGalleryStateReturn {
   // State
@@ -47,7 +48,7 @@ const useGalleryState = (): UseGalleryStateReturn => {
   // API query
   const { data, isLoading, refetch, isFetching } = useGetImagesQuery({
     page,
-    limit: 8,
+    limit: PAGE_LIMIT,
     color: filters.color ?? "",
     search: searchQuery,
     similarTo: searchMode === "similar" ? similarImageId : undefined,

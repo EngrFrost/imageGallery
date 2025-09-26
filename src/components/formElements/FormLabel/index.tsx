@@ -14,7 +14,10 @@ const FormLabel: FC<IProps> = ({ label, isRequired, className }) => (
   <div>
     <div className="flex items-center gap-1">
       <p
-        className={cn("flex gap-1 text-sm !mb-0 font-medium text-gray-11", className)}
+        className={cn(
+          "flex gap-1 text-sm !mb-0 font-medium text-gray-11",
+          className
+        )}
       >
         {label}
         {isRequired && <span className=" text-red-600">*</span>}

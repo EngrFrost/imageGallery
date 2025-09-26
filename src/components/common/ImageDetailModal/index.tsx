@@ -1,13 +1,14 @@
 import React from "react";
 import { Modal, Tag, Divider, Button } from "antd";
-import { 
-  EyeOutlined, 
-  TagOutlined, 
+import {
+  EyeOutlined,
+  TagOutlined,
   BgColorsOutlined,
   SearchOutlined,
-  CloseOutlined
+  CloseOutlined,
 } from "@ant-design/icons";
 import type { Image } from "../../../pages/GalleryPage";
+import { cn } from "../../../utils/helpers";
 
 interface ImageDetailModalProps {
   image: Image | null;
@@ -49,9 +50,10 @@ const ImageDetailModal: React.FC<ImageDetailModalProps> = ({
       onCancel={onClose}
       footer={null}
       width="90vw"
-      style={{ maxWidth: 1200 }}
-      className="image-detail-modal"
-      closeIcon={<CloseOutlined className="text-gray-500 hover:text-gray-700 text-lg" />}
+      className="image-detail-modal max-w-[1200px]"
+      closeIcon={
+        <CloseOutlined className="text-gray-500 hover:text-gray-700 text-lg" />
+      }
     >
       <div className="flex flex-col lg:flex-row gap-6 p-4">
         {/* Image Section */}
@@ -75,7 +77,9 @@ const ImageDetailModal: React.FC<ImageDetailModalProps> = ({
 
           {/* Description */}
           <div className="space-y-2">
-            <h4 className="text-sm font-medium text-gray-600 uppercase tracking-wide">Description</h4>
+            <h4 className="text-sm font-medium text-gray-600 uppercase tracking-wide">
+              Description
+            </h4>
             <p className="text-gray-800 leading-relaxed bg-gray-50 p-3 rounded-lg">
               {image.metadata?.description || "No description available"}
             </p>
@@ -90,9 +94,9 @@ const ImageDetailModal: React.FC<ImageDetailModalProps> = ({
               </h4>
               <div className="flex flex-wrap gap-2">
                 {image.metadata.tags.map((tag: string) => (
-                  <Tag 
+                  <Tag
                     key={tag}
-                    color="blue" 
+                    color="blue"
                     className="cursor-pointer transition-all duration-200 hover:bg-blue-600 hover:border-blue-600 text-xs px-2 py-1"
                     onClick={() => handleTagClick(tag)}
                   >
@@ -100,7 +104,9 @@ const ImageDetailModal: React.FC<ImageDetailModalProps> = ({
                   </Tag>
                 ))}
               </div>
-              <p className="text-xs text-gray-500 italic">Click a tag to search for similar images</p>
+              <p className="text-xs text-gray-500 italic">
+                Click a tag to search for similar images
+              </p>
             </div>
           )}
 
@@ -113,30 +119,44 @@ const ImageDetailModal: React.FC<ImageDetailModalProps> = ({
               </h4>
               <div className="flex flex-wrap gap-2">
                 {image.metadata.colors.map((color: string, index: number) => (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className="group cursor-pointer transition-all duration-200 hover:scale-110"
                     onClick={() => handleColorClick(color)}
                   >
                     <div className="flex items-center gap-2 bg-gray-50 hover:bg-gray-100 rounded-lg p-2">
-                      <div 
-                        className="w-6 h-6 rounded-full border-2 border-gray-200 shadow-sm"
-                        style={{ backgroundColor: color }}
+                      <div
+                        className={cn(
+                          "w-6 h-6 rounded-full border-2 border-gray-200 shadow-sm",
+                          color
+                        )}
                       />
-                      <span className="text-xs text-gray-600 font-mono">{color}</span>
+                      <span className="text-xs text-gray-600 font-mono">
+                        {color}
+                      </span>
                     </div>
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-gray-500 italic">Click a color to find similar colored images</p>
+              <p className="text-xs text-gray-500 italic">
+                Click a color to find similar colored images
+              </p>
             </div>
           )}
 
           {/* Processing Status */}
           <div className="space-y-2">
-            <h4 className="text-sm font-medium text-gray-600 uppercase tracking-wide">AI Processing Status</h4>
-            <Tag color={image.metadata?.aiProcessingStatus === 'completed' ? 'green' : 'orange'}>
-              {image.metadata?.aiProcessingStatus || 'Unknown'}
+            <h4 className="text-sm font-medium text-gray-600 uppercase tracking-wide">
+              AI Processing Status
+            </h4>
+            <Tag
+              color={
+                image.metadata?.aiProcessingStatus === "completed"
+                  ? "green"
+                  : "orange"
+              }
+            >
+              {image.metadata?.aiProcessingStatus || "Unknown"}
             </Tag>
           </div>
 

@@ -1,5 +1,4 @@
 import React from "react";
-import { Skeleton } from "antd";
 
 const ImageCardSkeleton: React.FC = () => {
   return (
@@ -23,7 +22,7 @@ const ImageCardSkeleton: React.FC = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer"></div>
           </div>
         </div>
-        
+
         {/* Status indicators */}
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">

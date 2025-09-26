@@ -1,4 +1,3 @@
-import React from "react";
 import { App } from "antd";
 import { ImageUpload, ImageDetailModal } from "../components/common";
 import { GalleryFilters, GalleryList } from "../components/gallery";
@@ -25,7 +24,7 @@ export interface PaginatedImagesResponse {
   };
 }
 
-const GalleryPage: React.FC = () => {
+const GalleryPage = () => {
   const galleryState = useGalleryState();
   const { message: messageApi } = App.useApp();
 

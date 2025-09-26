@@ -22,7 +22,7 @@ export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<{ access_token: string }, LoginCredentials>({
       queryFn: loginFn,
-      async onQueryStarted(arg, { queryFulfilled }) {
+      async onQueryStarted(_, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           Cookies.set("token", data.access_token);
@@ -33,7 +33,7 @@ export const authApi = apiSlice.injectEndpoints({
     }),
     signup: builder.mutation<{ token: string }, LoginCredentials>({
       queryFn: signupFn,
-      async onQueryStarted(arg, { queryFulfilled }) {
+      async onQueryStarted(_, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           Cookies.set("token", data.token);

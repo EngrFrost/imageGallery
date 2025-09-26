@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Drawer } from "antd";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
+import { cn } from "../../../utils/helpers";
+import { Drawer } from "../Drawer";
+import { Layout } from ".";
 
 const { Content } = Layout;
 
@@ -13,14 +15,14 @@ const AppLayout: React.FC = () => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   return (
-    <Layout style={{ minHeight: "100vh" }} className="bg-gray-50">
+    <Layout className="bg-gray-50 min-h-screen">
       {/* Desktop Sidebar */}
       {!isMobile && (
         <div className="fixed left-0 top-0 h-full w-64 bg-gray-900 z-20 shadow-xl">
@@ -45,14 +47,12 @@ const AppLayout: React.FC = () => {
 
       {/* Main Layout */}
       <Layout
-        style={{
-          marginLeft: isMobile ? 0 : 256,
-          minHeight: "100vh",
-        }}
-        className="bg-transparent"
+        className={cn(
+          "bg-transparent min-h-screen",
+          isMobile ? "ml-0" : "ml-64"
+        )}
       >
-      
-        <Content className="p-4 md:p-6 lg:p-8" >
+        <Content className="p-4 md:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto">
             <Outlet />
           </div>

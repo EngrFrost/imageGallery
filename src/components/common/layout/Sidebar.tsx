@@ -1,36 +1,27 @@
 import React from "react";
-import { Avatar, Button, Menu, Skeleton, Typography } from "antd";
 import { LogoutOutlined, PictureOutlined } from "@ant-design/icons";
 import { useAuth } from "../../../hooks/useAuth";
 import { useGetProfileQuery } from "../../../api/services/auth";
-
-const { Title, Text } = Typography;
+import { Menu, Button, Avatar, Skeleton } from "../";
 
 const Sidebar: React.FC = () => {
   const { logout } = useAuth();
   const { data: user, isLoading } = useGetProfileQuery();
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        padding: "16px 0",
-      }}
-    >
-      <div style={{ textAlign: "center", padding: "0 16px 24px" }}>
-        <Title level={4} style={{ color: "white", margin: 0 }}>
-          ImageGallery
-        </Title>
+    <div className="flex flex-col h-full p-4">
+      <div className="text-center pt-0">
+        <p className="text-white m-0 text-2xl">ImageGallery</p>
       </div>
 
       <div className="flex flex-col items-center justify-center p-4 border-t">
         {isLoading ? (
           <Skeleton
-            avatar={{ shape: "circle" }}
-            paragraph={{ rows: 1 }}
+            avatar={{ shape: "circle", size: "large" }}
+            title={false}
+            paragraph={{ rows: 1, width: "50%" }}
             active
+            className="w-full"
           />
         ) : user ? (
           <>
@@ -40,15 +31,12 @@ const Sidebar: React.FC = () => {
             >
               {user.email[0].toUpperCase()}
             </Avatar>
-            <Text style={{ color: "white", display: "block" }}>
-              {user.email}
-            </Text>
+            <p className="text-white block">{user.email}</p>
           </>
         ) : null}
       </div>
 
       <Menu
-        theme="dark"
         mode="inline"
         defaultSelectedKeys={["gallery"]}
         style={{ flex: 1, borderRight: 0 }}
@@ -61,18 +49,12 @@ const Sidebar: React.FC = () => {
         ]}
       />
 
-      <div style={{ padding: "16px" }}>
+      <div className="p-4">
         <Button
-          type="text"
-          danger
-          icon={<LogoutOutlined />}
+          variant="ghost"
+          startIcon={<LogoutOutlined />}
           onClick={logout}
-          className="w-full !text-[#a9a9a9] hover:!text-[#888888] hover:!bg-transparent hover:!border-none hover:!border-0 hover:!shadow-none focus:!border-none focus:!shadow-none focus:!outline-none"
-          style={{
-            border: 'none',
-            boxShadow: 'none',
-            outline: 'none'
-          }}
+          className="w-full text-gray-500 hover:!text-[#888888] hover:!bg-white-50 hover:!border-none hover:!border-0 hover:!shadow-none focus:!border-none focus:!shadow-none focus:!outline-none"
         >
           Logout
         </Button>
