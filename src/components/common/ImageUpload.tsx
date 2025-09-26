@@ -1,29 +1,36 @@
-import React, { useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
-import * as imageService from '../../api/services/images';
+import React, { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
+import { useUploadImagesMutation } from "../../api/imageApi";
 
 const ImageUpload: React.FC<{ onUpload: () => void }> = ({ onUpload }) => {
+  const [uploadImages] = useUploadImagesMutation();
+
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       const formData = new FormData();
       acceptedFiles.forEach((file) => {
-        formData.append('images', file);
+        formData.append("images", file);
       });
 
       try {
-        await imageService.uploadImages(formData);
+        await uploadImages(formData).unwrap();
         onUpload();
       } catch (error) {
-        console.error('Failed to upload images', error);
+        console.error("Failed to upload images", error);
       }
     },
-    [onUpload]
+    [onUpload, uploadImages]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+  });
 
   return (
-    <div {...getRootProps()} className={`dropzone ${isDragActive ? 'active' : ''}`}>
+    <div
+      {...getRootProps()}
+      className={`dropzone ${isDragActive ? "active" : ""}`}
+    >
       <input {...getInputProps()} />
       {isDragActive ? (
         <p>Drop the files here ...</p>

@@ -1,42 +1,28 @@
-import React, { useState, type ReactNode, useEffect } from "react";
-import * as authService from "../api/services/auth";
-import type { LoginCredentials } from "../components/core/Login/formhelper";
-import api from "../api/api";
+import { useState, useEffect, type ReactNode } from "react";
+import Cookies from "js-cookie";
 import { AuthContext } from "./AuthContext";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      setIsAuthenticated(true);
-    }
-  }, []);
-
-  const login = async (credentials: LoginCredentials) => {
-    const { token } = await authService.login(credentials);
-    localStorage.setItem("token", token);
-    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    setIsAuthenticated(true);
-  };
-
-  const signup = async (credentials: LoginCredentials) => {
-    const { token } = await authService.signup(credentials);
-    localStorage.setItem("token", token);
-    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    setIsAuthenticated(true);
-  };
+  const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get("token"));
 
   const logout = () => {
-    localStorage.removeItem("token");
-    delete api.defaults.headers.common["Authorization"];
+    Cookies.remove("token");
     setIsAuthenticated(false);
   };
 
+  useEffect(() => {
+    const handleCookieChange = () => {
+      setIsAuthenticated(!!Cookies.get("token"));
+    };
+
+    window.addEventListener("storage", handleCookieChange);
+    return () => {
+      window.removeEventListener("storage", handleCookieChange);
+    };
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, signup, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, logout }}>
       {children}
     </AuthContext.Provider>
   );
