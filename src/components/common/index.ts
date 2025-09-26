@@ -6,4 +6,5 @@ export * from "./Spin";
 export * from "./Pagination";
 export * from "./ImageUpload";
 export * from "./ImageCard";
+export * from "./ImageDetailModal";
 export * from "./Card";

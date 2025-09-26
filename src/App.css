@@ -1,7 +1,6 @@
 #root {
   width: 100%;
   margin: 0 auto;
-  text-align: center;
 }
 
 .logo {
@@ -52,7 +51,6 @@
   transition: all 0.3s ease;
   border-radius: 8px;
   overflow: hidden;
-  height: 400px; /* Enforce a fixed height for all cards */
   display: flex;
   flex-direction: column;
 }

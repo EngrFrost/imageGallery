@@ -5,14 +5,21 @@ const getImages = async ({
   page,
   limit,
   color,
+  search,
+  similarTo,
 }: {
   page: number;
   limit: number;
   color: string;
+  search?: string;
+  similarTo?: string;
 }) => {
-  const response = await getRequest(
-    `/images?page=${page}&limit=${limit}&color=${color}`,
-  );
+  let url = `/images?page=${page}&limit=${limit}`;
+  if (color) url += `&color=${color}`;
+  if (search) url += `&search=${encodeURIComponent(search)}`;
+  if (similarTo) url += `&similarTo=${similarTo}`;
+  
+  const response = await getRequest(url);
 
   return { data: response.data };
 };
