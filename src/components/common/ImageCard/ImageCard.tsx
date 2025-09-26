@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Tag, Tooltip } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import type { Image } from "../../types/image";
+import type { Image } from "../../../pages/GalleryPage";
 
 interface ImageCardProps {
   image: Image;
@@ -13,7 +13,7 @@ const ImageCard: React.FC<ImageCardProps> = ({ image, onFindSimilar }) => {
     <Card
       hoverable
       className="gallery-card"
-      cover={<img alt="" src={image.url} />}
+      cover={<img alt={image.metadata?.description} src={image.secureUrl} />}
       actions={[
         <Tooltip title="Find similar images">
           <SearchOutlined onClick={() => onFindSimilar(image.id)} />
@@ -22,13 +22,22 @@ const ImageCard: React.FC<ImageCardProps> = ({ image, onFindSimilar }) => {
     >
       <Card.Meta
         title={
-          <div style={{ textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
-            {image.tags.map((tag) => (
+          <div
+            style={{
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {image.metadata?.tags.map((tag: string) => (
               <Tag color="blue" key={tag}>
                 {tag}
               </Tag>
             ))}
           </div>
+        }
+        description={
+          <p className="text-sm text-gray-500">{image.metadata?.description}</p>
         }
       />
     </Card>

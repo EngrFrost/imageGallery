@@ -1,16 +1,11 @@
 import React from "react";
 import { Button, Menu, Typography } from "antd";
-import {
-  LogoutOutlined,
-  PictureOutlined,
-  CloudUploadOutlined,
-} from "@ant-design/icons";
+import { LogoutOutlined, PictureOutlined } from "@ant-design/icons";
 import { useAuth } from "../../../hooks/useAuth";
-import ImageUpload from "../../common/ImageUpload/ImageUpload";
 
 const { Title } = Typography;
 
-const Sidebar: React.FC<{ onUpload: () => void }> = ({ onUpload }) => {
+const Sidebar: React.FC = () => {
   const { logout } = useAuth();
 
   return (
@@ -26,14 +21,6 @@ const Sidebar: React.FC<{ onUpload: () => void }> = ({ onUpload }) => {
         <Title level={4} style={{ color: "white", margin: 0 }}>
           ImageGallery
         </Title>
-      </div>
-
-      <div style={{ padding: "0 16px 24px" }}>
-        <ImageUpload onUpload={onUpload}>
-          <Button icon={<CloudUploadOutlined />} type="primary" block>
-            Upload Image
-          </Button>
-        </ImageUpload>
       </div>
 
       <Menu
