@@ -47,7 +47,7 @@ const GalleryPage: React.FC = () => {
   // Enhanced query with search parameter and similar image support
   const { data, isLoading, refetch, isFetching } = useGetImagesQuery({
     page,
-    limit: 8, // Increased limit for better grid layout
+    limit: 5, // Increased limit for better grid layout
     color: filters.color ?? "",
     search: searchQuery,
     similarTo: searchMode === 'similar' ? similarImageId : undefined,
@@ -328,14 +328,13 @@ const GalleryPage: React.FC = () => {
             {/* Pagination */}
             {totalImages > (data?.meta.limit || 8) && (
               <div className="flex justify-center">
-                <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="bg-white  rounded-lg shadow-sm p-4">
                   <Pagination
                     current={page}
                     total={totalImages}
                     pageSize={data?.meta.limit || 8}
                     onChange={(newPage) => setPage(newPage)}
                     showSizeChanger={false}
-                    showQuickJumper
                     showTotal={(total, range) => 
                       `${range[0]}-${range[1]} of ${total} images`
                     }

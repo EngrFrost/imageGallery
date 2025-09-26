@@ -151,6 +151,57 @@ button:focus-visible {
   color: white;
 }
 
+/* Upload Modal Enhancements */
+.upload-modal .ant-modal-header {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 16px 24px 12px;
+}
+
+.upload-modal .ant-modal-body {
+  padding: 20px 24px;
+}
+
+.upload-modal .ant-modal-footer {
+  border-top: 1px solid #f0f0f0;
+  padding: 12px 24px 16px;
+}
+
+/* Custom scrollbar for file list */
+.upload-modal .space-y-3::-webkit-scrollbar {
+  width: 4px;
+}
+
+.upload-modal .space-y-3::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 2px;
+}
+
+.upload-modal .space-y-3::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 2px;
+}
+
+.upload-modal .space-y-3::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* File preview hover effect */
+.upload-modal .relative:hover img {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+/* Progress bar customization */
+.ant-progress-line .ant-progress-bg {
+  transition: width 0.3s ease;
+}
+
+/* Drag and drop enhanced states */
+.upload-modal .border-dashed:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
