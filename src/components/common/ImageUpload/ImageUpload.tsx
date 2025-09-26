@@ -1,8 +1,13 @@
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { useUploadImagesMutation } from "../../api/imageApi";
+import { useUploadImagesMutation } from "../../../api/imageApi";
 
-const ImageUpload: React.FC<{ onUpload: () => void }> = ({ onUpload }) => {
+interface ImageUploadProps {
+  onUpload: () => void;
+  children: React.ReactElement;
+}
+
+const ImageUpload: React.FC<ImageUploadProps> = ({ onUpload, children }) => {
   const [uploadImages] = useUploadImagesMutation();
 
   const onDrop = useCallback(
@@ -22,21 +27,20 @@ const ImageUpload: React.FC<{ onUpload: () => void }> = ({ onUpload }) => {
     [onUpload, uploadImages]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
+    noClick: true, // Prevents opening file dialog on click
+  });
+
+  // Attach the dropzone props to the single child element
+  const childWithDropzone = React.cloneElement(children, {
+    ...getRootProps(),
   });
 
   return (
-    <div
-      {...getRootProps()}
-      className={`dropzone ${isDragActive ? "active" : ""}`}
-    >
+    <div {...getRootProps()}>
       <input {...getInputProps()} />
-      {isDragActive ? (
-        <p>Drop the files here ...</p>
-      ) : (
-        <p>Drag 'n' drop some files here, or click to select files</p>
-      )}
+      {childWithDropzone}
     </div>
   );
 };

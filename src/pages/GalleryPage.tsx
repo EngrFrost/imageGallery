@@ -1,23 +1,29 @@
 import React, { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import {
+  Input,
+  Button,
+  Row,
+  Col,
+  Typography,
+  Space,
+  Spin,
+  Empty,
+} from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import { useGetImagesQuery } from "../api/imageApi";
-import ImageUpload from "../components/common/ImageUpload";
-import ImageCard from "../components/common/ImageCard";
 import type { Image } from "../types/image";
+import ImageCard from "../components/common/ImageCard/ImageCard";
+
+const { Title } = Typography;
 
 const GalleryPage: React.FC = () => {
-  const { logout } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
   const [apiParams, setApiParams] = useState<{
     similarTo?: string;
     color?: string;
   }>({});
 
-  const {
-    data: images = [],
-    isLoading,
-    refetch,
-  } = useGetImagesQuery(apiParams);
+  const { data: images = [], isLoading } = useGetImagesQuery(apiParams);
 
   const handleFindSimilar = (imageId: string) => {
     setApiParams({ similarTo: imageId });
@@ -40,38 +46,51 @@ const GalleryPage: React.FC = () => {
 
   return (
     <div>
-      <header>
-        <h1>Image Gallery</h1>
-        <input
-          type="text"
-          placeholder="Search by tag..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button onClick={logout}>Logout</button>
-      </header>
-      <div className="filters">
-        <button onClick={() => handleColorFilter("blue")}>Blue</button>
-        <button onClick={() => handleColorFilter("red")}>Red</button>
-        <button onClick={() => handleColorFilter("green")}>Green</button>
-        <button onClick={clearFilters}>Clear Filters</button>
-      </div>
-      <ImageUpload onUpload={refetch} />
+      <Row justify="space-between" align="middle" style={{ marginBottom: 24 }}>
+        <Col>
+          <Title level={2}>Gallery</Title>
+        </Col>
+        <Col>
+          <Input
+            placeholder="Search by tag..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ width: 250 }}
+            prefix={<SearchOutlined />}
+          />
+        </Col>
+      </Row>
+      <Row style={{ marginBottom: 24 }}>
+        <Col>
+          <Space>
+            <span>Filter by color:</span>
+            <Button onClick={() => handleColorFilter("blue")}>Blue</Button>
+            <Button onClick={() => handleColorFilter("red")}>Red</Button>
+            <Button onClick={() => handleColorFilter("green")}>Green</Button>
+            <Button onClick={clearFilters} type="dashed">
+              Clear Filters
+            </Button>
+          </Space>
+        </Col>
+      </Row>
       <main>
         {isLoading ? (
-          <p>Loading images...</p>
-        ) : filteredImages.length === 0 ? (
-          <p>No images found.</p>
-        ) : (
-          <div className="gallery">
-            {filteredImages.map((image: Image) => (
-              <ImageCard
-                key={image.id}
-                image={image}
-                onFindSimilar={handleFindSimilar}
-              />
-            ))}
+          <div style={{ textAlign: "center", padding: "50px" }}>
+            <Spin size="large" />
           </div>
+        ) : filteredImages.length === 0 ? (
+          <Empty description="No images found. Try a different filter or upload something new!" />
+        ) : (
+          <Row gutter={[16, 16]}>
+            {filteredImages.map((image: Image) => (
+              <Col xs={24} sm={12} md={8} lg={6} key={image.id}>
+                <ImageCard
+                  image={image}
+                  onFindSimilar={handleFindSimilar}
+                />
+              </Col>
+            ))}
+          </Row>
         )}
       </main>
     </div>

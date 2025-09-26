@@ -3,9 +3,9 @@ import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Button } from "antd";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import FormInput from "../formElements/FormInput";
+import FormInput from "../../formElements/FormInput";
 import type { SignupCredentials } from "../../types/auth";
 
 const schema = yup.object().shape({

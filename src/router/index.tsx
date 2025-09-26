@@ -1,30 +1,36 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import LoginPage from '../pages/LoginPage';
-import SignupPage from '../pages/SignupPage';
-import GalleryPage from '../pages/GalleryPage';
-import App from '../App';
-import ProtectedRoute from './ProtectedRoute';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import LoginPage from "../pages/LoginPage";
+import SignupPage from "../pages/SignupPage";
+import GalleryPage from "../pages/GalleryPage";
+import App from "../App";
+import ProtectedRoute from "./ProtectedRoute";
+import AppLayout from "../components/common/layout/AppLayout";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     children: [
       {
         element: <ProtectedRoute />,
         children: [
           {
-            index: true,
-            element: <GalleryPage />,
+            element: <AppLayout />,
+            children: [
+              {
+                index: true,
+                element: <GalleryPage />,
+              },
+            ],
           },
         ],
       },
       {
-        path: '/login',
+        path: "/login",
         element: <LoginPage />,
       },
       {
-        path: '/signup',
+        path: "/signup",
         element: <SignupPage />,
       },
     ],

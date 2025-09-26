@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { AppRouter } from "./router";
 import "./index.css";
+import "antd/dist/reset.css";
 import { store } from "./store/store.ts";
 import { AuthProvider } from "./providers/AuthProvider";
 
