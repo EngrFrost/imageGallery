@@ -11,17 +11,17 @@ interface ImageCardProps {
 
 const ImageCard: React.FC<ImageCardProps> = ({ image, onViewDetails, onFindSimilar }) => {
   return (
-    <div className="gallery-card group rounded-xl overflow-hidden bg-white shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer h-80 flex flex-col">
+    <div className="gallery-card group rounded-xl overflow-hidden bg-white shadow-md transition-[shadow,transform] duration-200 hover:shadow-xl hover:-translate-y-1 cursor-pointer h-80 flex flex-col">
       <div className="relative flex-shrink-0 overflow-hidden">
         <img
           alt={image.metadata?.description}
           src={image.secureUrl}
-          className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+          className="w-full h-48 object-cover transition-transform duration-200 group-hover:scale-105"
           onClick={() => onViewDetails(image)}
         />
         
         {/* Overlay with actions - appears on hover */}
-        <div className="absolute inset-0 bg-transparent bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+        <div className="absolute inset-0 bg-transparent bg-opacity-0 group-hover:bg-opacity-30 transition-opacity duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100">
           <div className="flex gap-2">
             <Button
               type="primary"
@@ -31,7 +31,7 @@ const ImageCard: React.FC<ImageCardProps> = ({ image, onViewDetails, onFindSimil
                 e.stopPropagation();
                 onViewDetails(image);
               }}
-              className="bg-white bg-opacity-90 border-none text-blue-600 hover:bg-white hover:scale-110 transition-all duration-200 shadow-lg"
+              className="bg-white bg-opacity-90 border-none text-blue-600 hover:bg-white hover:scale-110 transition-transform duration-150 shadow-lg"
             />
             <Button
               type="primary"
@@ -41,7 +41,7 @@ const ImageCard: React.FC<ImageCardProps> = ({ image, onViewDetails, onFindSimil
                 e.stopPropagation();
                 onFindSimilar(image.id);
               }}
-              className="bg-white bg-opacity-90 border-none text-green-600 hover:bg-white hover:scale-110 transition-all duration-200 shadow-lg"
+              className="bg-white bg-opacity-90 border-none text-green-600 hover:bg-white hover:scale-110 transition-transform duration-150 shadow-lg"
             />
           </div>
         </div>

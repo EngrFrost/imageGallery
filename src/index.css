@@ -73,31 +73,7 @@ button:focus-visible {
   overflow: hidden;
 }
 
-/* Custom animations for smooth transitions */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
 
-@keyframes slideInFromTop {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-/* Gallery card animations */
-.gallery-card {
-  animation: fadeIn 0.5s ease-out;
-}
-
-.gallery-card:nth-child(1) { animation-delay: 0.1s; }
-.gallery-card:nth-child(2) { animation-delay: 0.2s; }
-.gallery-card:nth-child(3) { animation-delay: 0.3s; }
-.gallery-card:nth-child(4) { animation-delay: 0.4s; }
 
 /* Image detail modal animations */
 .image-detail-modal .ant-modal-content {
