@@ -1,12 +1,14 @@
 import React from "react";
-import { Button, Menu, Typography } from "antd";
+import { Avatar, Button, Menu, Skeleton, Typography } from "antd";
 import { LogoutOutlined, PictureOutlined } from "@ant-design/icons";
 import { useAuth } from "../../../hooks/useAuth";
+import { useGetProfileQuery } from "../../../api/services/auth";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const Sidebar: React.FC = () => {
   const { logout } = useAuth();
+  const { data: user, isLoading } = useGetProfileQuery();
 
   return (
     <div
@@ -21,6 +23,28 @@ const Sidebar: React.FC = () => {
         <Title level={4} style={{ color: "white", margin: 0 }}>
           ImageGallery
         </Title>
+      </div>
+
+      <div className="flex flex-col items-center justify-center p-4 border-t">
+        {isLoading ? (
+          <Skeleton
+            avatar={{ shape: "circle" }}
+            paragraph={{ rows: 1 }}
+            active
+          />
+        ) : user ? (
+          <>
+            <Avatar
+              size="large"
+              style={{ backgroundColor: "#f56a00", marginBottom: 8 }}
+            >
+              {user.email[0].toUpperCase()}
+            </Avatar>
+            <Text style={{ color: "white", display: "block" }}>
+              {user.email}
+            </Text>
+          </>
+        ) : null}
       </div>
 
       <Menu
