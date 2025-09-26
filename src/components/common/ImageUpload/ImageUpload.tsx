@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Modal, Spin, notification } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-import { useUploadImagesMutation } from "../../../api/imageApi";
+import { useUploadImagesMutation } from "../../../api/services/images";
 
 interface ImageUploadProps {
   onUpload: () => void;
@@ -23,7 +23,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
       const formData = new FormData();
       acceptedFiles.forEach((file) => {
-        formData.append("file", file);
+        formData.append("images", file);
       });
 
       try {

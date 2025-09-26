@@ -1,9 +1,19 @@
 import React, { useState } from "react";
-import { Input, Button, Row, Col, Typography, Space, Spin, Empty } from "antd";
+import {
+  Input,
+  Button,
+  Row,
+  Col,
+  Typography,
+  Space,
+  Spin,
+  Empty,
+  Pagination,
+} from "antd";
 import { SearchOutlined, CloudUploadOutlined } from "@ant-design/icons";
-import { useGetImagesQuery } from "../api/imageApi";
 import ImageCard from "../components/common/ImageCard/ImageCard";
 import ImageUpload from "../components/common/ImageUpload/ImageUpload";
+import { useGetImagesQuery } from "../api/services/images";
 
 const { Title } = Typography;
 
@@ -18,30 +28,39 @@ export interface Image {
   };
 }
 
+export interface PaginatedImagesResponse {
+  items: Image[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
+
 const GalleryPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  const [apiParams, setApiParams] = useState<{
-    similarTo?: string;
-    color?: string;
-  }>({});
+  const [page, setPage] = useState(1);
+  const [filters, setFilters] = useState<{ color?: string }>({});
 
-  const {
-    data: images = [],
-    isLoading,
-    refetch,
-  } = useGetImagesQuery(apiParams);
+  const { data, isLoading, refetch } = useGetImagesQuery({
+    page,
+    limit: 3,
+    color: filters.color ?? "",
+  });
 
-  const handleFindSimilar = (imageId: string) => {
-    setApiParams({ similarTo: imageId });
-  };
+  const images = data?.items ?? [];
+  const totalImages = data?.meta?.total ?? 0;
 
   const handleColorFilter = (color: string) => {
-    setApiParams({ color });
+    setPage(1);
+    setFilters({ color });
   };
 
   const clearFilters = () => {
-    setApiParams({});
+    setPage(1);
+    setFilters({});
     setSearchQuery("");
   };
 
@@ -79,7 +98,14 @@ const GalleryPage: React.FC = () => {
       <ImageUpload
         open={isUploadModalOpen}
         onClose={() => setIsUploadModalOpen(false)}
-        onUpload={refetch}
+        onUpload={() => {
+          // Reset to page 1 to see new uploads
+          if (page !== 1) {
+            setPage(1);
+          } else {
+            refetch();
+          }
+        }}
       />
       <Row style={{ marginBottom: 24 }}>
         <Col>
@@ -102,13 +128,24 @@ const GalleryPage: React.FC = () => {
         ) : filteredImages.length === 0 ? (
           <Empty description="No images found. Try a different filter or upload something new!" />
         ) : (
-          <Row gutter={[16, 16]}>
-            {filteredImages.map((image: Image) => (
-              <Col xs={24} sm={12} md={8} lg={6} key={image.id}>
-                <ImageCard image={image} onFindSimilar={handleFindSimilar} />
-              </Col>
-            ))}
-          </Row>
+          <>
+            <Row gutter={[16, 16]}>
+              {filteredImages.map((image: Image) => (
+                <Col xs={24} sm={12} md={8} lg={6} key={image.id}>
+                  <ImageCard image={image} onFindSimilar={() => {}} />
+                </Col>
+              ))}
+            </Row>
+            <Row justify="center" style={{ marginTop: 24 }}>
+              <Pagination
+                current={page}
+                total={totalImages}
+                pageSize={data?.meta.limit || 12}
+                onChange={(newPage) => setPage(newPage)}
+                showSizeChanger={false}
+              />
+            </Row>
+          </>
         )}
       </main>
     </div>

@@ -52,6 +52,35 @@
   transition: all 0.3s ease;
   border-radius: 8px;
   overflow: hidden;
+  height: 400px; /* Enforce a fixed height for all cards */
+  display: flex;
+  flex-direction: column;
+}
+
+.gallery-card .ant-card-body {
+  flex-grow: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.gallery-card .ant-card-meta {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.gallery-card .ant-card-meta-description {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.image-card-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit to 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .gallery-card:hover {
