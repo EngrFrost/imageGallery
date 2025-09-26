@@ -7,10 +7,10 @@ import {
   Col,
   Input,
   Pagination,
-  Spin,
   Button,
   ImageUpload,
   ImageCard,
+  ImageCardSkeleton,
   ImageDetailModal,
 } from "../components/common";
 
@@ -47,7 +47,7 @@ const GalleryPage: React.FC = () => {
   // Enhanced query with search parameter and similar image support
   const { data, isLoading, refetch, isFetching } = useGetImagesQuery({
     page,
-    limit: 5, // Increased limit for better grid layout
+    limit: 8, // Consistent with pagination
     color: filters.color ?? "",
     search: searchQuery,
     similarTo: searchMode === 'similar' ? similarImageId : undefined,
@@ -56,14 +56,16 @@ const GalleryPage: React.FC = () => {
   const images = data?.items ?? [];
   const totalImages = data?.meta?.total ?? 0;
 
-  // Debounced search effect
+
+  // Debounced search effect - only reset page when search changes, not on page changes
   useEffect(() => {
     const timer = setTimeout(() => {
       if (page !== 1) setPage(1); // Reset to first page on search
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [searchQuery, page]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery]); // Intentionally excluding 'page' to avoid infinite loop
 
   const handleColorFilter = (color: string) => {
     setPage(1);
@@ -245,11 +247,24 @@ const GalleryPage: React.FC = () => {
 
       {/* Main Content */}
       <main className="px-1">
-        {isLoading && !isFetching ? (
-          <div className="text-center py-20">
-            <Spin size="large" />
-            <p className="mt-4 text-gray-500">Loading your gallery...</p>
-          </div>
+        {(isLoading || isFetching) && images.length === 0 ? (
+          <>
+            {/* Results Info Skeleton */}
+            <div className="mb-6">
+              <div className="h-4 bg-gray-200 rounded w-48 relative overflow-hidden animate-pulse">
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer"></div>
+              </div>
+            </div>
+
+            {/* Skeleton Grid */}
+            <Row gutter={[24, 24]} className="mb-8">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <Col xs={24} sm={12} md={8} lg={6} key={`skeleton-${index}`}>
+                  <ImageCardSkeleton />
+                </Col>
+              ))}
+            </Row>
+          </>
         ) : images.length === 0 ? (
           <div className="text-center py-20">
             <div className="bg-white rounded-lg shadow-sm p-12">
@@ -271,21 +286,17 @@ const GalleryPage: React.FC = () => {
           </div>
         ) : (
           <>
-            {/* Loading Overlay */}
-            {isFetching && (
-              <div className="loading-overlay fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-white shadow-lg rounded-lg px-4 py-2">
-                <div className="flex items-center gap-2">
-                  <Spin size="small" />
-                  <span className="text-sm text-gray-600">Updating...</span>
-                </div>
-              </div>
-            )}
-
             {/* Results Info */}
             <div className="mb-6">
-              <div className="text-sm text-gray-600 mb-2">
-                Showing {images.length} of {totalImages} images
-                {searchMode === 'similar' && similarImage && ` (similar to "${similarImage.metadata?.description}")`}
+              <div className={`text-sm text-gray-600 mb-2 transition-opacity duration-200 ${isFetching ? 'opacity-50' : 'opacity-100'}`}>
+                {isFetching && images.length === 0 ? (
+                  <div className="h-4 bg-gray-200 rounded w-56 animate-pulse"></div>
+                ) : (
+                  <>
+                    Showing {images.length} of {totalImages} images
+                    {searchMode === 'similar' && similarImage && ` (similar to "${similarImage.metadata?.description}")`}
+                  </>
+                )}
               </div>
               
               {/* Show similar image reference */}
@@ -314,26 +325,50 @@ const GalleryPage: React.FC = () => {
 
             {/* Image Grid */}
             <Row gutter={[24, 24]} className="mb-8">
-              {images.map((image: Image) => (
-                <Col xs={24} sm={12} md={8} lg={6} key={image.id}>
-                  <ImageCard 
-                    image={image} 
-                    onViewDetails={handleViewDetails}
-                    onFindSimilar={handleFindSimilar} 
-                  />
-                </Col>
-              ))}
+              {isFetching && images.length > 0 ? (
+                // Show mix of existing images with skeleton loading for new content
+                <>
+                  {images.map((image: Image) => (
+                    <Col xs={24} sm={12} md={8} lg={6} key={image.id}>
+                      <div className={`transition-opacity duration-300 ${isFetching ? 'opacity-60' : 'opacity-100'}`}>
+                        <ImageCard 
+                          image={image} 
+                          onViewDetails={handleViewDetails}
+                          onFindSimilar={handleFindSimilar} 
+                        />
+                      </div>
+                    </Col>
+                  ))}
+                  {/* Add skeleton cards when fetching to show loading state */}
+                  {Array.from({ length: Math.max(0, 8 - images.length) }).map((_, index) => (
+                    <Col xs={24} sm={12} md={8} lg={6} key={`loading-skeleton-${index}`}>
+                      <ImageCardSkeleton />
+                    </Col>
+                  ))}
+                </>
+              ) : (
+                // Normal image display
+                images.map((image: Image) => (
+                  <Col xs={24} sm={12} md={8} lg={6} key={image.id}>
+                    <ImageCard 
+                      image={image} 
+                      onViewDetails={handleViewDetails}
+                      onFindSimilar={handleFindSimilar} 
+                    />
+                  </Col>
+                ))
+              )}
             </Row>
 
             {/* Pagination */}
-            {totalImages > (data?.meta.limit || 8) && (
+            {totalImages > 8 && (
               <div className="flex justify-center">
-                <div className="bg-white  rounded-lg shadow-sm p-4">
+                <div className="bg-white rounded-lg shadow-sm p-4">
                   <Pagination
                     current={page}
                     total={totalImages}
-                    pageSize={data?.meta.limit || 8}
-                    onChange={(newPage) => setPage(newPage)}
+                    pageSize={8}
+                    onChange={setPage}
                     showSizeChanger={false}
                     showTotal={(total, range) => 
                       `${range[0]}-${range[1]} of ${total} images`

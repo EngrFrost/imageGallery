@@ -30,7 +30,7 @@ const SignupForm: React.FC = () => {
     <Form methods={methods} onSubmit={onSubmit}>
       <FormInput label="Email" inputName="email" />
       <FormInput label="Password" type="password" inputName="password" />
-      <Button isLoading={isLoading} className="w-full">
+      <Button isLoading={isLoading} className="w-full !bg-blue-500 !text-white">
         Sign Up
       </Button>
     </Form>
