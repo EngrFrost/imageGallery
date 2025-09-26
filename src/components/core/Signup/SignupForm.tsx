@@ -1,47 +1,39 @@
-import React from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { Button } from "antd";
-import { useAuth } from "../../../hooks/useAuth";
+import { Button } from "../../common";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../../formElements/FormInput";
-import type { SignupCredentials } from "../../types/auth";
-
-const schema = yup.object().shape({
-  email: yup.string().email("Invalid email").required("Email is required"),
-  p: yup
-    .string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
-});
+import Form from "../../formElements/Form";
+import { useSignupMutation } from "../../../api/services/auth";
+import { validationSchema, type SignupCredentials } from "./formhelpers";
 
 const SignupForm: React.FC = () => {
-  const { signup } = useAuth();
   const navigate = useNavigate();
   const methods = useForm<SignupCredentials>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = async (data: SignupCredentials) => {
-    try {
-      await signup(data);
-      navigate("/");
-    } catch (error) {
-      console.error("Signup failed", error);
+  const [signup, { isLoading, isSuccess }] = useSignupMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/login");
     }
+  }, [isSuccess, navigate]);
+
+  const onSubmit = async (data: SignupCredentials) => {
+    await signup(data).unwrap();
   };
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <FormInput label="Email" inputName="email" />
-        <FormInput label="Password" type="password" inputName="password" />
-        <Button type="primary" htmlType="submit">
-          Sign Up
-        </Button>
-      </form>
-    </FormProvider>
+    <Form methods={methods} onSubmit={onSubmit}>
+      <FormInput label="Email" inputName="email" />
+      <FormInput label="Password" type="password" inputName="password" />
+      <Button isLoading={isLoading} className="w-full">
+        Sign Up
+      </Button>
+    </Form>
   );
 };
 

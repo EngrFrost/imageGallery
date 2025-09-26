@@ -1,16 +1,31 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import LoginForm from '../components/core/Login/LoginForm';
+import { Link } from "react-router-dom";
+import { Col, Row, Card } from "../components/common";
+import LoginForm from "../components/core/Login/LoginForm";
 
-const LoginPage: React.FC = () => {
+const LoginPage = () => {
   return (
-    <div>
-      <h1>Login Page</h1>
-      <LoginForm />
-      <p>
-        Don't have an account? <Link to="/signup">Sign up</Link>
-      </p>
-    </div>
+    <Row
+      justify="center"
+      align="middle"
+      style={{ minHeight: "100vh", background: "#f0f2f5" }}
+    >
+      <Col xs={22} sm={16} md={12} lg={8} xl={6}>
+        <Card>
+          <div style={{ textAlign: "center", marginBottom: "24px" }}>
+            <p className="text-2xl font-bold">Welcome Back</p>
+            <p className="text-gray-500">
+              Please enter your credentials to login
+            </p>
+          </div>
+          <LoginForm />
+          <div style={{ textAlign: "center", marginTop: "16px" }}>
+            <p className="text-gray-500">
+              Don't have an account? <Link to="/signup">Sign up</Link>
+            </p>
+          </div>
+        </Card>
+      </Col>
+    </Row>
   );
 };
 

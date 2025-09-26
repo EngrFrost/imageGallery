@@ -9,7 +9,7 @@ const loginFn = async (credentials: LoginCredentials) => {
 };
 
 const signupFn = async (credentials: LoginCredentials) => {
-  const response = await postRequest('/auth/signup', credentials);
+  const response = await postRequest('/user/register', credentials);
   return { data: response.data };
 };
 

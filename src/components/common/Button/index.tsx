@@ -12,32 +12,18 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "text-white bg-blue-6 active:bg-blue-7 hover:bg-blue-5 disabled:bg-gray-2 disabled:text-gray-4 disabled:border disabled:border-gray-4",
+          "text-blue-600 bg-blue-600 active:bg-blue-700 hover:bg-blue-500 disabled:bg-gray-200 disabled:text-gray-400 disabled:border disabled:border-gray-400",
         secondary:
-          "text-gray-11 bg-white border border-gray-4 hover:bg-gray-2 active:bg-gray-4 disabled:bg-gray-2 disabled:text-gray-5",
+          "text-gray-11 bg-white border border-gray-400 hover:bg-gray-200 active:bg-gray-400 disabled:bg-gray-200 disabled:text-gray-500",
         tertiary:
-          "bg-transparent text-gray-11 border-none hover:bg-gray-2 active:bg-gray-4 disabled:bg-white disabled:text-gray-5",
+          "bg-transparent text-gray-11 border-none hover:bg-gray-200 active:bg-gray-400 disabled:bg-white disabled:text-gray-500",
         ghost:
-          "bg-transparent text-blue-6 hover:text-blue-5 hover:bg-transparent active:text-blue-7 active:bg-transparent disabled:text-gray-5 disabled:bg-transparent",
-        "danger-primary":
-          "text-white bg-red-6 active:bg-red-7 hover:bg-red-5 disabled:bg-gray-2 disabled:text-gray-4 disabled:border disabled:border-gray-4",
-        "danger-secondary":
-          "text-red-6 bg-white border border-red-6 hover:text-red-5 hover:border-red-5 active:text-red-7 active:border-red-7 disabled:text-gray-4 disabled:bg-white disabled:border-gray-4",
-        "danger-tertiary":
-          "text-red-6 bg-white border-none hover:bg-red-1 hover:text-red-5 active:bg-red-2 active:text-red-7 disabled:bg-white disabled:text-gray-5",
-        "danger-ghost":
-          "bg-transparent text-red-6 hover:text-red-5 hover:bg-transparent active:text-red-7 active:bg-transparent disabled:text-gray-4 disabled:bg-transparent",
-        warning:
-          "text-white bg-orange-6 active:bg-orange-7 hover:bg-orange-5 disabled:bg-gray-2 disabled:text-gray-4 disabled:border disabled:border-gray-4",
+          "bg-transparent text-blue-600 hover:text-blue-500 hover:bg-transparent active:text-blue-700 active:bg-transparent disabled:text-gray-500 disabled:bg-transparent",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
         sm: "h-8 px-3 text-xs",
         base: "h-8 px-4 py-1 text-sm",
-        md: "h-9 px-4 py-1 text-sm",
-        lg: "h-10 px-4 text-sm",
-        xl: "h-12 px-10 text-base",
-        icon: "h-6 w-6",
       },
     },
     defaultVariants: {
