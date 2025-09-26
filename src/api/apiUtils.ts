@@ -1,9 +1,9 @@
 import type { AxiosResponse } from "axios";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { notification } from "antd";
+import { messageApi } from "../utils/messageHelper";
 
-const url = "http://localhost:8000/api";
+const url = `${import.meta.env.VITE_APP_BACKEND_URL}`;
 
 const instance = axios.create({
   baseURL: url,
@@ -55,13 +55,13 @@ async function deleteRequest(
 
 instance.interceptors.request.use(
   (config) => {
-    const token = Cookies.get('token');
+    const token = Cookies.get("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
     if (config.data instanceof FormData) {
-      delete config.headers['Content-Type'];
+      delete config.headers["Content-Type"];
     }
 
     return config;
@@ -75,6 +75,9 @@ instance.interceptors.response.use(
     const status = error.response?.status;
     const currentPath = window.location.pathname;
 
+    if (!messageApi.current) {
+      return Promise.reject(error);
+    }
     if (status === 401) {
       // Don't handle 401 on login/signup pages to avoid infinite loops
       if (currentPath === "/login" || currentPath === "/signup") {
@@ -82,23 +85,23 @@ instance.interceptors.response.use(
       }
 
       // Clear token immediately
-      Cookies.remove('token');
-      
+      Cookies.remove("token");
+
       // Determine the error message based on the response
-      const errorMessage = error.response?.data?.message || "Your session has expired.";
-      const isTokenExpired = errorMessage.toLowerCase().includes('expired') || 
-                            errorMessage.toLowerCase().includes('invalid') ||
-                            errorMessage.toLowerCase().includes('token');
+      const errorMessage =
+        error.response?.data?.message || "Your session has expired.";
+      const isTokenExpired =
+        errorMessage.toLowerCase().includes("expired") ||
+        errorMessage.toLowerCase().includes("invalid") ||
+        errorMessage.toLowerCase().includes("token");
 
       // Show appropriate notification
-      notification.warning({
-        message: isTokenExpired ? "Session Expired" : "Authentication Required",
-        description: isTokenExpired ? 
-          "Your session has expired. Please log in again." : 
-          "Please log in to continue.",
-        duration: 4,
-        placement: "topRight",
-      });
+      messageApi.current.warning(
+        isTokenExpired
+          ? "Your session has expired. Please log in again."
+          : "Please log in to continue.",
+        4
+      );
 
       // Use global logout handler if available, otherwise fallback to window.location
       if (globalLogoutHandler) {
@@ -113,20 +116,20 @@ instance.interceptors.response.use(
       }
     } else if (status === 403) {
       // Handle forbidden access
-      notification.error({
-        message: "Access Denied",
-        description: "You don't have permission to access this resource.",
-        duration: 4,
-        placement: "topRight",
-      });
+      messageApi.current.error(
+        "You don't have permission to access this resource.",
+        4
+      );
+    } else if (status >= 400 && status < 500) {
+      const errorMessage =
+        error.response?.data?.message || "An error occurred. Please try again.";
+      messageApi.current.error(errorMessage, 4);
     } else if (status >= 500) {
       // Handle server errors
-      notification.error({
-        message: "Server Error",
-        description: "Something went wrong on our end. Please try again later.",
-        duration: 4,
-        placement: "topRight",
-      });
+      messageApi.current.error(
+        "Something went wrong on our end. Please try refreshing the page.",
+        4
+      );
     }
 
     return Promise.reject(error);

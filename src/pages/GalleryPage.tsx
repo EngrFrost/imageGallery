@@ -1,5 +1,5 @@
 import React from "react";
-import { message } from "antd";
+import { App } from "antd";
 import { ImageUpload, ImageDetailModal } from "../components/common";
 import { GalleryFilters, GalleryList } from "../components/gallery";
 import { useGalleryState } from "../hooks/useGalleryState";
@@ -27,6 +27,7 @@ export interface PaginatedImagesResponse {
 
 const GalleryPage: React.FC = () => {
   const galleryState = useGalleryState();
+  const { message: messageApi } = App.useApp();
 
   const handleUploadSuccess = () => {
     if (galleryState.page !== 1) {
@@ -34,7 +35,7 @@ const GalleryPage: React.FC = () => {
     } else {
       galleryState.refetch();
     }
-    message.success("Images uploaded successfully!");
+    messageApi.success("Images uploaded successfully!");
   };
 
   return (

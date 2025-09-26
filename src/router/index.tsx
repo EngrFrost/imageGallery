@@ -6,6 +6,7 @@ import App from "../App";
 import ProtectedRoute from "./ProtectedRoute";
 import AppLayout from "../components/common/layout/AppLayout";
 import { AuthProvider } from "../providers/AuthProvider";
+import CatchRedirect from '../components/common/CatchRedirect';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <SignupPage />,
+      },
+      {
+        path: '*',
+        element: <CatchRedirect />,
       },
     ],
   },
